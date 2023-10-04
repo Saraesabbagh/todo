@@ -10,14 +10,13 @@
     align-items: center;
     z-index: 1000; /* Set a high z-index value to ensure it appears on top of other elements */
   }
-  
-.modal {
-    display: flex;
+  .modal {
+    /* display: flex; */
     position: relative;
+    max-width: 300px;
     top: 0;
     left: 0;
     width: 30%;
-    height: 40%;
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
@@ -29,13 +28,64 @@
   .logo-container{
     
   }
-  
+
   .modal-content {
     background: white;
+    max-width: 300px;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
-    /* align-items: center; */
+    font-size: 18px;
     justify-content: center;
   }
+
+
+  .form-container{
+    max-width: 400px; 
+ 
+    margin: 0 auto; 
+    padding: 20px; 
+    text-align: left;
+  }
+
+  .form-container label input {
+    display: block;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+  
+
+  .form-container select {
+    width: 30%; 
+    margin-top: 5px; 
+    padding: 10px; 
+    appearance: none; 
+    background-color: #ffffff; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+  }
+  .form-container select option {
+    margin-top: 20px; 
+    display: block;
+    position: relative;
+    
+
+  }
+
+  
+
+  .form-container button {
+    display: block; 
+    width: 100%; 
+    margin-top: 10px; 
+    background-color: #FFE01D;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #FFE01D;
+    font-weight: 800;
+    font-size: medium;
+  }
+
+  
+
   

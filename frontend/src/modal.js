@@ -4,7 +4,7 @@ import addtodologo from "./images/addtodologo.png";
 
 const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
   if (!isOpen) return null;
-
+  const currentYear = new Date().getFullYear();
   return (
     <div className="overlay">
       <div className="modal">
@@ -13,6 +13,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
       
         <h2>Add Todo</h2>
         <form
+            className="form-container"
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit(formData);
@@ -35,7 +36,45 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
           </label>
-          <button type="submit">Add</button>
+          <label>
+            Due Date:
+            <div style={{  alignItems: 'center' }}>
+                <select
+                    value={formData.deadlineDay}
+                    onChange={(e) => setFormData({ ...formData, deadlineDay: e.target.value })}
+                >
+                    
+                    {Array.from({ length: 31 }, (_, index) => index + 1).map((day) => (
+                    <option key={day} value={day}>
+                        {day}
+                    </option>
+                    ))}
+                   
+                </select>
+                <select
+                    value={formData.deadlineMonth}
+                    onChange={(e) => setFormData({ ...formData, deadlineMonth: e.target.value })}
+                >
+           
+                    {Array.from({ length: 12 }, (_, index) => index + 1).map((month) => (
+                    <option key={month} value={month}>
+                        {month}
+                    </option>
+                    ))}
+                </select>
+                <select
+                    value={formData.deadlineYear}
+                    onChange={(e) => setFormData({ ...formData, deadlineYear: e.target.value })}
+                    >
+                    {Array.from({ length: 6 }, (_, index) => currentYear + index).map((year) => (
+                        <option key={year} value={year}>
+                        {year}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            </label>
+            <button type="submit">Add</button>
         </form>
         </div>
       </div>

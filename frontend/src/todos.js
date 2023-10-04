@@ -10,7 +10,7 @@ function Todos() {
   const [formData, setFormData] = useState({ title: "", description: "" });
 
   const handleAddTodo = (todoData) => {
-    fetch("/addtodo", {
+    fetch("http://localhost:8000/addtodo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
