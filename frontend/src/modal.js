@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+
 import './modal.css';
 import addtodologo from "./images/addtodologo.png";
 
 const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.className === "overlay" && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('click', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   const currentYear = new Date().getFullYear();
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.title.trim() === '' || formData.description.trim() === '') {
+     
+      alert('Please fill out all fields');
+      return;
+    }
+    onSubmit(formData);
+    onClose();
+  };
+
+
   return (
     <div className="overlay">
       <div className="modal">
@@ -14,11 +44,7 @@ const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
         <h2>Add Todo</h2>
         <form
             className="form-container"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(formData);
-            onClose();
-          }}
+          onSubmit={handleSubmit}
         >
           <label>
             Title:

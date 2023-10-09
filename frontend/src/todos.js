@@ -10,7 +10,7 @@ function Todos() {
   const [formData, setFormData] = useState({ title: "", description: "" });
 
   const handleAddTodo = (todoData) => {
-    fetch("http://localhost:8000/addtodo", {
+    fetch(`http://localhost:8000/addtodo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,16 +19,12 @@ function Todos() {
     })
       .then((response) => response.json())
       .then((newTodo) => {
-        // Assuming the response from the server contains the newly created todo object
         console.log("Todo added successfully:", newTodo);
-        // Update your state with the new todo, assuming todos is your state variable containing existing todos
         setTodos([...todos, newTodo]);
-        // Close the modal
         setIsModalOpen(false);
       })
       .catch((error) => {
         console.error("Error adding todo:", error);
-        // Handle error scenarios, e.g., show an error message to the user
       });
   };
 
@@ -38,7 +34,8 @@ function Todos() {
       try {
         const res = await fetch('http://localhost:8000/todos');
         const data = await res.json();
-        setTodos(data);
+        const reversedTodos = data.reverse();
+        setTodos(reversedTodos);
       } catch (error) {
         console.error('Error fetching todos:', error);
       }
@@ -46,15 +43,6 @@ function Todos() {
 
     getTodos();
   }, []);
-//   const handleCheckboxChange = async (todoId, done) => {
-//     try {
-//       // Update the todo's done property in the backend
-//       // Implement your logic to update the todo's done property here
-//       console.log(`Todo ID: ${todoId}, Done: ${done}`);
-//     } catch (error) {
-//       console.error('Error updating todo:', error);
-//     }
-//   };
 
   return (
     <div>
@@ -68,7 +56,7 @@ function Todos() {
             </button></span>
         </div>
       
-      <ul>
+      <ol>
         {todos.map(todo => (
           <li key={todo._id}>
             {todo.title} - {todo.description} - <input
@@ -78,7 +66,7 @@ function Todos() {
               />
           </li>
         ))}
-      </ul>
+      </ol>
       </div>
       <Modal
         isOpen={isModalOpen}
