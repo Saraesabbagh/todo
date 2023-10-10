@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "concurrently": "^8.2.1"
-  },
   "scripts": {
     "start:frontend": "react-scripts start",
     "start:backend": "nodemon --watch '*.*' --watch .env server.js",

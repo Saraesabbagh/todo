@@ -7,26 +7,9 @@ import listiclelogoandname from "./images/listiclelogoandname.png";
 function Todos() {
   const [todos, setTodos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ title: "", description: "" });
+  
 
-  const handleAddTodo = (todoData) => {
-    fetch(`http://localhost:8000/addtodo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todoData),
-    })
-      .then((response) => response.json())
-      .then((newTodo) => {
-        console.log("Todo added successfully:", newTodo);
-        setTodos([...todos, newTodo]);
-        setIsModalOpen(false);
-      })
-      .catch((error) => {
-        console.error("Error adding todo:", error);
-      });
-  };
+  
 
 
   useEffect(() => {
@@ -71,10 +54,13 @@ function Todos() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAddTodo}
-        formData={formData}
-        setFormData={setFormData}
-      />
+       
+        
+        setTodos={setTodos}
+       
+      >
+       
+      </Modal>
     </div>
   );
 }
