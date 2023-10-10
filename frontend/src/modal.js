@@ -1,15 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import TodoForm from "./todoform";
 
-import './modal.css';
+import "./modal.css";
 // import addtodologo from "./images/addtodologo.png";
-
 
 const Modal = ({ isOpen, onClose }) => {
   const [todos, setTodos] = useState([]);
   const [formData, setFormData] = useState({ title: "", description: "" });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   const handleAddTodo = (todoData) => {
     fetch(`http://localhost:8000/addtodo`, {
@@ -36,26 +34,23 @@ const Modal = ({ isOpen, onClose }) => {
       }
     };
 
-    window.addEventListener('click', handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
     return () => {
-      window.removeEventListener('click', handleClickOutside);
+      window.removeEventListener("click", handleClickOutside);
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
- 
-
 
   return (
     <div className="overlay">
       <div className="modal">
         <TodoForm
-      
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleAddTodo}
-        formData={formData}
-        setFormData={setFormData}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddTodo}
+          formData={formData}
+          setFormData={setFormData}
         />
       </div>
     </div>
