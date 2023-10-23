@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import "./todos.css";
 import Modal from "./modal";
 import listiclelogoandname from "./images/listiclelogoandname.png";
@@ -45,6 +45,41 @@ function Todos() {
     }
   };
 
+  const handleEditClick = (todo) => {
+    setIsEditing(true);
+    setEditTodo(todo);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateTodo = async (updatedTodo) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/updatetodo/${updatedTodo._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTodo),
+        }
+      );
+
+      if (response.ok) {
+        const updatedTodos = todos.map((todo) =>
+          todo._id === updatedTodo._id ? updatedTodo : todo
+        );
+        setTodos(updatedTodos);
+        setIsModalOpen(false);
+        setIsEditing(false);
+        setEditTodo(null);
+      } else {
+        throw new Error("Failed to update todo");
+      }
+    } catch (error) {
+      console.error("Error updating todo:", error);
+    }
+  };
+
   return (
     <div>
       <div className="logoContainer">
@@ -75,15 +110,22 @@ function Todos() {
                   onClick={() => handleDeleteClick(todo._id)}
                 />
               </button>
+              <button>
+                <MdModeEdit
+                  entryId={todo._id}
+                  onClick={() => handleDeleteClick(todo._id)}
+                />
+              </button>
             </li>
           ))}
         </ol>
       </div>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        setTodos={setTodos}
-      ></Modal>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <TodoForm
+          onSubmit={isEditing ? handleUpdateTodo : handleAddTodo}
+          initialFormData={isEditing ? editTodo : null}
+        />
+      </Modal>
     </div>
   );
 }
