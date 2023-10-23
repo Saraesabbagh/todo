@@ -3,5 +3,8 @@
     "start:frontend": "react-scripts start",
     "start:backend": "nodemon --watch '*.*' --watch .env server.js",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+  },
+  "dependencies": {
+    "react-icons": "^4.11.0"
   }
 }
