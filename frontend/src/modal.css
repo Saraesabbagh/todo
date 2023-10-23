@@ -49,7 +49,7 @@
   }
 
   .form-container label input {
-    display: block;
+    display: flex;
     margin-bottom: 10px;
     justify-content: center;
   }

@@ -1,82 +1,57 @@
-import React from "react";
-import './modal.css';
-import addtodologo from "./images/addtodologo.png";
+import React, { useRef, useEffect, useState } from "react";
+import TodoForm from "./todoform";
 
-const Modal = ({ isOpen, onClose, onSubmit, formData, setFormData }) => {
+import "./modal.css";
+// import addtodologo from "./images/addtodologo.png";
+
+const Modal = ({ isOpen, onClose }) => {
+  const [todos, setTodos] = useState([]);
+  const [formData, setFormData] = useState({ title: "", description: "" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddTodo = (todoData) => {
+    fetch(`http://localhost:8000/addtodo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todoData),
+    })
+      .then((response) => response.json())
+      .then((newTodo) => {
+        console.log("Todo added successfully:", newTodo);
+        setTodos([...todos, newTodo]);
+        setIsModalOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error adding todo:", error);
+      });
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.className === "overlay" && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
-  const currentYear = new Date().getFullYear();
+
   return (
     <div className="overlay">
       <div className="modal">
-      <div className="modal-content">
-        <div className="logo-container"><img style={{ width: '80px', height: '80px' }} src={addtodologo} alt="addtodologo" /></div>
-      
-        <h2>Add Todo</h2>
-        <form
-            className="form-container"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(formData);
-            onClose();
-          }}
-        >
-          <label>
-            Title:
-            <input
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            />
-          </label>
-          <label>
-            Description:
-            <input
-              type="text"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            />
-          </label>
-          <label>
-            Due Date:
-            <div style={{  alignItems: 'center' }}>
-                <select
-                    value={formData.deadlineDay}
-                    onChange={(e) => setFormData({ ...formData, deadlineDay: e.target.value })}
-                >
-                    
-                    {Array.from({ length: 31 }, (_, index) => index + 1).map((day) => (
-                    <option key={day} value={day}>
-                        {day}
-                    </option>
-                    ))}
-                   
-                </select>
-                <select
-                    value={formData.deadlineMonth}
-                    onChange={(e) => setFormData({ ...formData, deadlineMonth: e.target.value })}
-                >
-           
-                    {Array.from({ length: 12 }, (_, index) => index + 1).map((month) => (
-                    <option key={month} value={month}>
-                        {month}
-                    </option>
-                    ))}
-                </select>
-                <select
-                    value={formData.deadlineYear}
-                    onChange={(e) => setFormData({ ...formData, deadlineYear: e.target.value })}
-                    >
-                    {Array.from({ length: 6 }, (_, index) => currentYear + index).map((year) => (
-                        <option key={year} value={year}>
-                        {year}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            </label>
-            <button type="submit">Add</button>
-        </form>
-        </div>
+        <TodoForm
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddTodo}
+          formData={formData}
+          setFormData={setFormData}
+        />
       </div>
     </div>
   );
